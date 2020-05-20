@@ -113,6 +113,10 @@
     </Compile>
     <Compile Include="Command\Command.cs" />
     <Compile Include="DisplayRootRegistry.cs" />
+    <Compile Include="EF\Soldier.cs" />
+    <Compile Include="EF\SoldierContext.cs" />
+    <Compile Include="Model\ISoldierRepository.cs" />
+    <Compile Include="Model\SoldierRepository.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="View\MainControl\MenuVertical.xaml.cs">
@@ -156,10 +160,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="EF\" />
-    <Folder Include="Model\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
