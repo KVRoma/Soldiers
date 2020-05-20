@@ -1,0 +1,40 @@
+﻿<Window x:Class="Soldiers.View.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Soldiers.View"
+        xmlns:control="clr-namespace:Soldiers.View.MainControl"
+        mc:Ignorable="d"
+        Title="{Binding NameWindow}" 
+        Style="{StaticResource WindowStyle}"
+        Height="450" 
+        Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Grid.Column="0" 
+                Grid.RowSpan="2" 
+                Style="{StaticResource BorderRadiusSearch}">
+            <control:MenuVertical/>
+        </Border>
+
+        <Border Grid.Column="1" 
+                Grid.Row="0" 
+                Style="{StaticResource BorderRadiusSearch}">
+            <control:Search/>
+        </Border>
+        
+        <Border Grid.Column="1" 
+                Grid.Row="1" 
+                Style="{StaticResource BorderRadiusSearch}">
+            <control:StartDataGrid/>
+        </Border>
+    </Grid>
+</Window>

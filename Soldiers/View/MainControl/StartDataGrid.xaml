@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="Soldiers.View.MainControl.StartDataGrid"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Soldiers.View.MainControl"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="700">
+    <Grid>
+        <DataGrid Grid.Row="1" 
+                  AutoGenerateColumns="False" 
+                  IsReadOnly="True" 
+                  ItemsSource="{Binding Soldier, UpdateSourceTrigger=PropertyChanged}" 
+                  SelectedItem="{Binding Select, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Binding="{Binding Path=NumberClient}"/>
+                <DataGridTextColumn Header="Date" Binding="{Binding Path=DateRegistration, StringFormat=\{0:dd.MM.yyyy\}}"/>
+                <DataGridTextColumn Header="Type of Client" Width="auto" Binding="{Binding Path=TypeOfClient}"/>
+                <DataGridTextColumn Header="Company Name" Width="auto" Binding="{Binding Path=CompanyName}"/>
+                <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Path=PrimaryFullName}"/>
+                <DataGridTextColumn Header="Phone Number" Width="auto" Binding="{Binding Path=PrimaryPhoneNumber}"/>
+                <DataGridTextColumn Header="Email" Width="auto" Binding="{Binding Path=PrimaryEmail}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</UserControl>
