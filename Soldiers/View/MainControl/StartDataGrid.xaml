@@ -10,16 +10,11 @@
         <DataGrid Grid.Row="1" 
                   AutoGenerateColumns="False" 
                   IsReadOnly="True" 
-                  ItemsSource="{Binding Soldier, UpdateSourceTrigger=PropertyChanged}" 
-                  SelectedItem="{Binding Select, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                  ItemsSource="{Binding Soldiers, UpdateSourceTrigger=PropertyChanged}" 
+                  SelectedItem="{Binding SoldierSelect, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Id" Binding="{Binding Path=NumberClient}"/>
-                <DataGridTextColumn Header="Date" Binding="{Binding Path=DateRegistration, StringFormat=\{0:dd.MM.yyyy\}}"/>
-                <DataGridTextColumn Header="Type of Client" Width="auto" Binding="{Binding Path=TypeOfClient}"/>
-                <DataGridTextColumn Header="Company Name" Width="auto" Binding="{Binding Path=CompanyName}"/>
-                <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Path=PrimaryFullName}"/>
-                <DataGridTextColumn Header="Phone Number" Width="auto" Binding="{Binding Path=PrimaryPhoneNumber}"/>
-                <DataGridTextColumn Header="Email" Width="auto" Binding="{Binding Path=PrimaryEmail}"/>
+                <DataGridTextColumn Header="Id" Binding="{Binding Path=Id}"/>
+                <DataGridTextColumn Header="Date" Binding="{Binding Path=AccountNumber}"/>                
             </DataGrid.Columns>
         </DataGrid>
 

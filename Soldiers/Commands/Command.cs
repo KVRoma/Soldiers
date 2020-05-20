@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Soldiers.Command
+namespace Soldiers.Commands
 {
 
     public class Command : ICommand

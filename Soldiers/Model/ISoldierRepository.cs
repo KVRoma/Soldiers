@@ -9,8 +9,8 @@ namespace Soldiers.Model
 {
     interface ISoldierRepository : IDisposable
     {
-        IEnumerable<Soldier> GetBookList();
-        Soldier GetBook(int id);
+        IEnumerable<Soldier> GetList();
+        Soldier Get(int id);
         void Create(Soldier item);
         void Update(Soldier item);
         void Delete(int id);

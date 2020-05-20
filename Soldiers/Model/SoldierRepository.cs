@@ -54,7 +54,7 @@ namespace Soldiers.Model
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Soldier GetBook(int id)
+        public Soldier Get(int id)
         {
             return db.Soldiers.Find(id);
         }
@@ -62,7 +62,7 @@ namespace Soldiers.Model
         /// Повертає всю таблицю Soldier, використовує ToList()
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Soldier> GetBookList()
+        public IEnumerable<Soldier> GetList()
         {
             return db.Soldiers.ToList();
         }

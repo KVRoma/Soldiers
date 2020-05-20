@@ -20,13 +20,13 @@
                  FontWeight="Bold"
                  Foreground="Blue">
             <TextBox.InputBindings>
-                <KeyBinding Command="{Binding SearchClient}"
+                <KeyBinding Command="{Binding SearchCommand}"
                             CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type TextBox}},Path=Text}"
                             Key="Return"/>
             </TextBox.InputBindings>
         </TextBox>
         <Label Grid.Column="2" 
-               Content="(search by Type of Client, Company, Name, Phone, Email)"
+               Content="{Binding SoldierSelect.AccountNumber}"
                Style="{StaticResource LabelSearch}"/>
     </Grid>
 </UserControl>

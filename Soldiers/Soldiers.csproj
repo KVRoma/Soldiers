@@ -111,7 +111,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Command\Command.cs" />
+    <Compile Include="Commands\Command.cs" />
     <Compile Include="DisplayRootRegistry.cs" />
     <Compile Include="EF\Soldier.cs" />
     <Compile Include="EF\SoldierContext.cs" />
