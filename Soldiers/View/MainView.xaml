@@ -19,22 +19,27 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        
+        <!-- Left panel -->
         <Border Grid.Column="0" 
                 Grid.RowSpan="2" 
-                Style="{StaticResource BorderRadiusSearch}">
-            <control:MenuVertical/>
+                Style="{StaticResource BorderRadiusSearch}"
+                Margin="5,5,0,5">            
+            <control:MenuVertical Width="100"/>
         </Border>
 
-        <Border Grid.Column="1" 
-                Grid.Row="0" 
-                Style="{StaticResource BorderRadiusSearch}">
-            <control:Search/>
-        </Border>
-        
+        <!-- Soldier -->
         <Border Grid.Column="1" 
                 Grid.Row="1" 
                 Style="{StaticResource BorderRadiusSearch}">
-            <control:StartDataGrid/>
+            <control:StartDataGrid Visibility="{Binding IsVisibleSoldier}"/>
+        </Border>
+
+        <!-- Soldier Edit -->
+        <Border Grid.Column="1" 
+                Grid.Row="1" 
+                Style="{StaticResource BorderRadiusSearch}">
+            <control:SoldierEdit Visibility="{Binding IsVisibleEditSoldier}"/>
         </Border>
     </Grid>
 </Window>

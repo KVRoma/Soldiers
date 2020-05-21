@@ -99,6 +99,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\MainControl\SoldierEdit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainControl\StartDataGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -127,6 +131,9 @@
     </Compile>
     <Compile Include="View\MainControl\Search.xaml.cs">
       <DependentUpon>Search.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MainControl\SoldierEdit.xaml.cs">
+      <DependentUpon>SoldierEdit.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainControl\StartDataGrid.xaml.cs">
       <DependentUpon>StartDataGrid.xaml</DependentUpon>

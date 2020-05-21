@@ -5,26 +5,60 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Soldiers.View.MainControl"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="700">
+             d:DesignHeight="250" d:DesignWidth="900">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        
+        <Border Grid.Column="0" 
+                Grid.Row="0" 
+                Margin="10">
+            <local:Search/>
+        </Border>
+        
         <DataGrid Grid.Row="1" 
+                  Margin="5"
                   AutoGenerateColumns="False" 
                   IsReadOnly="True" 
                   ItemsSource="{Binding Soldiers, UpdateSourceTrigger=PropertyChanged}" 
                   SelectedItem="{Binding SoldierSelect, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <DataGrid.Columns>                
-                <DataGridTextColumn Header="О/с №" Binding="{Binding Path=AccountNumber}"/>
-                <DataGridTextColumn Header="Військове звання" />
-                <DataGridTextColumn Header="П.І.Б." />
-                <DataGridTextColumn Header="Дата народження" />
-                <DataGridTextColumn Header="ВОС новий" />
-                <DataGridTextColumn Header="ВОС старий" />
-                <DataGridTextColumn Header="Розряд" />
-                <DataGridTextColumn Header="Рік мед.огляду" />
-                <DataGridTextColumn Header="Команда" />
-                <DataGridTextColumn Header="Причина відстрочки" />
+                <DataGridTextColumn Header="О/с №" Width="auto" Binding="{Binding Path=AccountNumber}"/>
+                <DataGridTextColumn Header="Військове звання" Width="auto" />
+                <DataGridTextColumn Header="П.І.Б." Width="*" />
+                <DataGridTextColumn Header="Дата народження" Width="auto" />
+                <DataGridTextColumn Header="ВОС новий" Width="auto" />
+                <DataGridTextColumn Header="ВОС старий" Width="auto" />
+                <DataGridTextColumn Header="Розряд" Width="auto" />
+                <DataGridTextColumn Header="Рік мед.огляду" Width="auto" />
+                <DataGridTextColumn Header="Команда" Width="auto" />
+                <DataGridTextColumn Header="Причина відстрочки" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
+
+        <StackPanel Grid.Row="2" 
+                    Orientation="Horizontal">
+            <Button Content="Add" 
+                    Style="{StaticResource FooterButton}"
+                    Foreground="Green"
+                    BorderBrush="Green"
+                    Command="{Binding AddSoldier}"/>
+            <Button Content="Ins" 
+                    Style="{StaticResource FooterButton}"
+                    Foreground="Brown"
+                    BorderBrush="Brown"
+                    Command="{Binding InsSoldier}"
+                    IsEnabled="{Binding IsEnabledButtonSoldier}"/>
+            <Button Content="Del" 
+                    Style="{StaticResource FooterButton}"
+                    Foreground="Red"
+                    BorderBrush="Red"
+                    Command="{Binding DelSoldier}"
+                    IsEnabled="{Binding IsEnabledButtonSoldier}"/>
+        </StackPanel>
 
     </Grid>
 </UserControl>
