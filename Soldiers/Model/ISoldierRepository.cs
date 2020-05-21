@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace Soldiers.Model
 {
-    interface ISoldierRepository : IDisposable
+    interface IRepository<T> : IDisposable where T : class
     {
-        IEnumerable<Soldier> GetList();
-        Soldier Get(int id);
-        void Create(Soldier item);
-        void Update(Soldier item);
+        IEnumerable<T> GetList();
+        T Get(int id);
+        void Create(T item);
+        void Update(T item);
         void Delete(int id);
-        void DeleteRange(List<Soldier> soldiers);
+        void DeleteRange(List<T> items);
         void Save();
     }
 }

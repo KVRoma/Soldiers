@@ -113,8 +113,11 @@
     </Compile>
     <Compile Include="Commands\Command.cs" />
     <Compile Include="DisplayRootRegistry.cs" />
+    <Compile Include="EF\Dictionary.cs" />
     <Compile Include="EF\Soldier.cs" />
     <Compile Include="EF\SoldierContext.cs" />
+    <Compile Include="Enums\ComboBoxName.cs" />
+    <Compile Include="Model\DictionaryRepository.cs" />
     <Compile Include="Model\ISoldierRepository.cs" />
     <Compile Include="Model\SoldierRepository.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />

@@ -12,9 +12,17 @@
                   IsReadOnly="True" 
                   ItemsSource="{Binding Soldiers, UpdateSourceTrigger=PropertyChanged}" 
                   SelectedItem="{Binding SoldierSelect, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Id" Binding="{Binding Path=Id}"/>
-                <DataGridTextColumn Header="Date" Binding="{Binding Path=AccountNumber}"/>                
+            <DataGrid.Columns>                
+                <DataGridTextColumn Header="О/с №" Binding="{Binding Path=AccountNumber}"/>
+                <DataGridTextColumn Header="Військове звання" />
+                <DataGridTextColumn Header="П.І.Б." />
+                <DataGridTextColumn Header="Дата народження" />
+                <DataGridTextColumn Header="ВОС новий" />
+                <DataGridTextColumn Header="ВОС старий" />
+                <DataGridTextColumn Header="Розряд" />
+                <DataGridTextColumn Header="Рік мед.огляду" />
+                <DataGridTextColumn Header="Команда" />
+                <DataGridTextColumn Header="Причина відстрочки" />
             </DataGrid.Columns>
         </DataGrid>
 

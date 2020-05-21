@@ -8,63 +8,61 @@ using System.Data.Entity;
 
 namespace Soldiers.Model
 {
-    public class SoldierRepository : IRepository<Soldier>
+    public class DictionaryRepository : IRepository<Dictionary>
     {
         private SoldierContext db;
         /// <summary>
-        /// Класс для роботи з базою в таблиці Soldier (pattern Repository)
+        /// Класс для роботи з базою в таблиці Dictionary (pattern Repository)
         /// </summary>
-        public SoldierRepository()
+        public DictionaryRepository()
         {
             this.db = new SoldierContext();
         }
 
-
-
         /// <summary>
-        /// Створює екземпляр Soldier
+        /// Створює екземпляр Dictionary
         /// </summary>
         /// <param name="item"></param>
-        public void Create(Soldier item)
+        public void Create(Dictionary item)
         {
-            db.Soldiers.Add(item);
+            db.Dictionaries.Add(item);
         }
         /// <summary>
-        /// Видаляє екземпляр Soldier по вказаному Id, перевіряє на валідність
+        /// Видаляє екземпляр Dictionary по вказаному Id, перевіряє на валідність
         /// </summary>
         /// <param name="id"></param>
         public void Delete(int id)
         {
-            Soldier soldier = db.Soldiers.Find(id);
-            if (soldier != null)
+            Dictionary dic = db.Dictionaries.Find(id);
+            if (dic != null)
             {
-                db.Soldiers.Remove(soldier);
+                db.Dictionaries.Remove(dic);
             }
         }
         /// <summary>
-        /// Видаляє діапазон Soldier
+        /// Видаляє діапазон Dictionary
         /// </summary>
-        /// <param name="soldiers"></param>
-        public void DeleteRange(List<Soldier> soldiers)
+        /// <param name="items"></param>
+        public void DeleteRange(List<Dictionary> items)
         {
-            db.Soldiers.RemoveRange(soldiers);
+            db.Dictionaries.RemoveRange(items);
         }
         /// <summary>
-        /// Повертає екземпляр Soldier по вказаному Id
+        /// Повертає екземпляр Dictionary по вказаному Id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Soldier Get(int id)
+        public Dictionary Get(int id)
         {
-            return db.Soldiers.Find(id);
+            return db.Dictionaries.Find(id);
         }
         /// <summary>
-        /// Повертає всю таблицю Soldier, використовує ToList()
+        ///  Повертає всю таблицю Dictionary, використовує ToList()
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Soldier> GetList()
+        public IEnumerable<Dictionary> GetList()
         {
-            return db.Soldiers.ToList();
+            return db.Dictionaries.ToList();
         }
         /// <summary>
         /// Зберігає всі зміни
@@ -74,18 +72,16 @@ namespace Soldiers.Model
             db.SaveChanges();
         }
         /// <summary>
-        /// Оновлює дані в БД по заданому екземпляру Soldier
+        /// Оновлює дані в БД по заданому екземпляру Dictionary
         /// </summary>
         /// <param name="item"></param>
-        public void Update(Soldier item)
+        public void Update(Dictionary item)
         {
             db.Entry(item).State = EntityState.Modified;
         }
 
-        
-        
         #region IDisposable Support
-        private bool disposed = false; 
+        private bool disposed = false; // To detect redundant calls
         /// <summary>
         /// Викликає Dispose
         /// </summary>
@@ -105,12 +101,12 @@ namespace Soldiers.Model
         /// Викликає Dispose та GC
         /// </summary>
         public void Dispose()
-        {           
+        {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-       
+
         #endregion
     }
 }

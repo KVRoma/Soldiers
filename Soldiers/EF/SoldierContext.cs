@@ -13,6 +13,8 @@ namespace Soldiers.EF
         public SoldierContext() : base("ConStr") { }
 
         public DbSet<Soldier> Soldiers { get; set; }
+        public DbSet<Dictionary> Dictionaries { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
