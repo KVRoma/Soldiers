@@ -80,6 +80,8 @@ namespace Soldiers.ViewModel
         private Command _addSoldier;
         private Command _insSoldier;
         private Command _delSoldier;
+        private Command _saveEditSoldier;
+        private Command _cancelEditSoldier;
 
         public Command SearchCommand => _searchCommand ?? (_searchCommand = new Command(obj =>
         {
@@ -95,6 +97,7 @@ namespace Soldiers.ViewModel
         }));
         public Command AddSoldier => _addSoldier ?? (_addSoldier = new Command(obj =>
         {
+            SoldierSelect = new Soldier();
             SetVisibleSoldier();
         }));
         public Command InsSoldier => _insSoldier ?? (_insSoldier = new Command(obj=> 
@@ -105,6 +108,26 @@ namespace Soldiers.ViewModel
         {
             soldierRepo.Delete(SoldierSelect.Id);
             soldierRepo.Save();
+            Soldiers = soldierRepo.GetList();
+        }));
+        public Command SaveEditSoldier => _saveEditSoldier ?? (_saveEditSoldier = new Command(obj=> 
+        {
+            if (SoldierSelect.Id > 0)
+            {
+                soldierRepo.Update(SoldierSelect);               
+            }
+            else
+            {
+                soldierRepo.Create(SoldierSelect);                
+            }
+            soldierRepo.Save();
+            Soldiers = soldierRepo.GetList();
+            SetVisibleSoldier();
+        }));
+        public Command CancelEditSoldier => _cancelEditSoldier ?? (_cancelEditSoldier = new Command(obj=> 
+        {
+            SoldierSelect = null;
+            SetVisibleSoldier();
         }));
 
         #endregion

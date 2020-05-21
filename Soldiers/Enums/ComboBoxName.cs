@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 namespace Soldiers.Enums
 {
     public enum ComboBoxName
-    {
-        Gender,
+    {        
         ProfileName,
         MilitaryRank,
         TypeAccounting

@@ -27,15 +27,15 @@
                   SelectedItem="{Binding SoldierSelect, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <DataGrid.Columns>                
                 <DataGridTextColumn Header="О/с №" Width="auto" Binding="{Binding Path=AccountNumber}"/>
-                <DataGridTextColumn Header="Військове звання" Width="auto" />
-                <DataGridTextColumn Header="П.І.Б." Width="*" />
-                <DataGridTextColumn Header="Дата народження" Width="auto" />
-                <DataGridTextColumn Header="ВОС новий" Width="auto" />
-                <DataGridTextColumn Header="ВОС старий" Width="auto" />
-                <DataGridTextColumn Header="Розряд" Width="auto" />
-                <DataGridTextColumn Header="Рік мед.огляду" Width="auto" />
-                <DataGridTextColumn Header="Команда" Width="auto" />
-                <DataGridTextColumn Header="Причина відстрочки" Width="*"/>
+                <DataGridTextColumn Header="Військове звання" Width="auto" Binding="{Binding Path=MilitaryRank}" />
+                <DataGridTextColumn Header="П.І.Б." Width="*" Binding="{Binding Path=FullName}" />
+                <DataGridTextColumn Header="Дата народження" Width="auto" Binding="{Binding Path=BirthDate}" />
+                <DataGridTextColumn Header="ВОС новий" Width="auto" Binding="{Binding Path=VOSnew}" />
+                <DataGridTextColumn Header="ВОС старий" Width="auto" Binding="{Binding Path=VOSold}" />
+                <DataGridTextColumn Header="Розряд" Width="auto" Binding="{Binding Path=Category}" />
+                <DataGridTextColumn Header="Рік мед.огляду" Width="auto" Binding="{Binding Path=YearMedical}" />
+                <DataGridTextColumn Header="Команда" Width="auto" Binding="{Binding Path=TeamNumber}" />
+                <DataGridTextColumn Header="Причина відстрочки" Width="*" Binding="{Binding Path=ReasonForDefer}"/>
             </DataGrid.Columns>
         </DataGrid>
 

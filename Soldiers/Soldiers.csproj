@@ -116,6 +116,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\FocusAdvancement.cs" />
     <Compile Include="DisplayRootRegistry.cs" />
     <Compile Include="EF\Dictionary.cs" />
     <Compile Include="EF\Soldier.cs" />

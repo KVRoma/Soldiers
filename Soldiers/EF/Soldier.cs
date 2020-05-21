@@ -11,7 +11,7 @@ namespace Soldiers.EF
         public int Id { get; set; }
         public string AccountNumber { get; set; }
         public int IdentificationNumber { get; set; }
-        public string Gender { get; set; }
+        public bool Gender { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string SurName { get; set; }
@@ -19,7 +19,7 @@ namespace Soldiers.EF
         {
             get { return SurName + " " + FirstName + " " + LastName; }
         }
-        public DateTime BirthDate { get; set; }
+        public DateTime BirthDate { get; set; } = DateTime.Today;
         public string RegistrationAddress { get; set; }
         public string HouseAddress { get; set; }
         public string StudyPlace { get; set; }
@@ -31,8 +31,8 @@ namespace Soldiers.EF
         public string Category { get; set; }
         public string ProfileName { get; set; }
         public string MilitaryRank { get; set; }
-        public DateTime RankDate { get; set; }
-        public DateTime AcceptedDate { get; set; }
+        public DateTime RankDate { get; set; } = DateTime.Today;
+        public DateTime AcceptedDate { get; set; } = DateTime.Today;
         public DateTime RemoveDate { get; set; }
         public bool OR1 { get; set; }
         public bool OR2 { get; set; }
