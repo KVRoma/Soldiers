@@ -190,6 +190,9 @@
   <ItemGroup>
     <Resource Include="Emblem_64.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <SplashScreen Include="Resources\190909426_images_17130966966.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
