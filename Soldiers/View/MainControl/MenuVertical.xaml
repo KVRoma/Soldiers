@@ -6,23 +6,18 @@
              xmlns:local="clr-namespace:Soldiers.View.MainControl"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="100">
-    <Grid>
-        <Menu Style="{StaticResource Vertical}">
-            <MenuItem Header="Items 1" Margin="0,0,0,10">
-                <MenuItem Header="1111"/>
-                <MenuItem Header="2222"/>
-                <MenuItem Header="3333"/>
-            </MenuItem>
-            <MenuItem Header="Items 2" Margin="0,0,0,10">
-                <MenuItem Header="1111"/>
-                <MenuItem Header="2222"/>
-                <MenuItem Header="3333"/>
-            </MenuItem>
-            <MenuItem Header="Items 3" Margin="0,0,0,10">
-                <MenuItem Header="1111"/>
-                <MenuItem Header="2222"/>
-                <MenuItem Header="3333"/>
-            </MenuItem>
-        </Menu>
-    </Grid>
+    <StackPanel Orientation="Vertical">
+        <RadioButton Content="Звіт 1"/>
+        <RadioButton Content="Звіт 2"/>
+        <RadioButton Content="Звіт 3"/>
+        <RadioButton Content="Звіт 4"/>
+        <RadioButton Content="Звіт 5"/>
+
+        <Button Content="Перегляд"
+                Margin="5,50,5,5"
+                Style="{StaticResource FooterButton}"
+                Foreground="Blue"
+                BorderBrush="Blue"/>
+       
+    </StackPanel>
 </UserControl>

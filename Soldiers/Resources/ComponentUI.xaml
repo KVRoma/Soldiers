@@ -17,7 +17,7 @@
             <GradientStop Offset="0.70" Color="Blue"/>
         </LinearGradientBrush.GradientStops>
     </LinearGradientBrush>
-    <!--************************************** -->
+    <!--************************************** -->   
     <!--Градиенты заливки (блідий синій - білий - блідий синій) -->
     <LinearGradientBrush x:Key="Gradient_LightBlue_White_LightBlue">
         <LinearGradientBrush.GradientStops>
@@ -30,7 +30,7 @@
     <!-- Стиль для Window -->
     <Style TargetType="Window" x:Key="WindowStyle">
         <Setter Property="Background" Value="{StaticResource Gradient_LightBlue_White_LightBlue}"/>
-        <Setter Property="WindowState" Value="Maximized"/>
+        <Setter Property="WindowState" Value="Maximized"/>        
     </Style>
     <!--************************************** -->
     <!-- Стиль для Menu (вертикальне меню) -->
@@ -131,23 +131,50 @@
         <Setter Property="Margin" Value="5"/>
     </Style>
     <!--**********************************************************-->
+    <!--Авто стиль для RadioButton-->
+    <Style TargetType="{x:Type RadioButton}">
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="GroupName" Value="Report"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="Blue"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="Red"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <!--**********************************************************-->
     <Style TargetType="{x:Type TextBox}">
         <Setter Property="Margin" Value="2"/>
         <Setter Property="Foreground" Value="Blue"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FontWeight" Value="Bold"/>
     </Style>
     <Style TargetType="{x:Type DatePicker}">
         <Setter Property="Margin" Value="2"/>
         <Setter Property="Foreground" Value="Blue"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Style.Triggers>
+            <Trigger Property="SelectedDate" Value="01.01.0001">
+                <Setter Property="Text" Value="{x:Null}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
     <Style TargetType="{x:Type ComboBox}">
         <Setter Property="Margin" Value="2"/>
         <Setter Property="Foreground" Value="Blue"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FontWeight" Value="Bold"/>
     </Style>
     <Style TargetType="{x:Type CheckBox}">
         <Setter Property="Margin" Value="2"/>
+        <Setter Property="FontWeight" Value="Bold"/>
     </Style>
 
 

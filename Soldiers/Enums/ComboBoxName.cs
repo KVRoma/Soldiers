@@ -8,8 +8,8 @@ namespace Soldiers.Enums
 {
     public enum ComboBoxName
     {        
-        ProfileName,
-        MilitaryRank,
-        TypeAccounting
+        ProfileName = 1,
+        MilitaryRank = 2,
+        TypeAccounting = 3
     }
 }

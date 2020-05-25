@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Soldiers.View.MainControl"
              mc:Ignorable="d" 
-             d:DesignHeight="20" d:DesignWidth="700">
+             d:DesignHeight="25" d:DesignWidth="700">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -13,7 +13,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Label Grid.Column="0" 
-               Content="Enter to search..."
+               Content="Введіть для пошуку..."
                Style="{StaticResource LabelSearch}"/>
         <TextBox Grid.Column="1" 
                  HorizontalAlignment="Stretch"                                 
@@ -24,10 +24,12 @@
                 <KeyBinding Command="{Binding SearchCommand}"
                             CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type TextBox}},Path=Text}"
                             Key="Return"/>
+                <KeyBinding Command="{Binding EditDictionary}" 
+                            Key="F1"/>
             </TextBox.InputBindings>
         </TextBox>
         <Label Grid.Column="2" 
-               Content="{Binding SoldierSelect.AccountNumber}"
+               Content="(для скидання фільтру очистіть поле та натисніть Enter, перегляд довідників - F1)"
                Style="{StaticResource LabelSearch}"/>
     </Grid>
 </UserControl>

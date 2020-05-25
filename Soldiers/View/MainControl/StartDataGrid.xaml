@@ -25,15 +25,22 @@
                   IsReadOnly="True" 
                   ItemsSource="{Binding Soldiers, UpdateSourceTrigger=PropertyChanged}" 
                   SelectedItem="{Binding SoldierSelect, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Foreground" Value="{Binding Path=Color}"/>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>                
                 <DataGridTextColumn Header="О/с №" Width="auto" Binding="{Binding Path=AccountNumber}"/>
-                <DataGridTextColumn Header="Військове звання" Width="auto" Binding="{Binding Path=MilitaryRank}" />
+                <DataGridTextColumn Header="Звання" Width="auto" Binding="{Binding Path=MilitaryRank}" />
                 <DataGridTextColumn Header="П.І.Б." Width="*" Binding="{Binding Path=FullName}" />
-                <DataGridTextColumn Header="Дата народження" Width="auto" Binding="{Binding Path=BirthDate}" />
-                <DataGridTextColumn Header="ВОС новий" Width="auto" Binding="{Binding Path=VOSnew}" />
-                <DataGridTextColumn Header="ВОС старий" Width="auto" Binding="{Binding Path=VOSold}" />
+                <DataGridTextColumn Header="Дата народження" Width="auto" Binding="{Binding Path=BirthDate, StringFormat=\{0:dd.MM.yyyy\}}" />
+                <DataGridTextColumn Header="ВОСн" Width="auto" Binding="{Binding Path=VOSnew}" />
+                <DataGridTextColumn Header="ВОСс" Width="auto" Binding="{Binding Path=VOSold}" />
+                <DataGridTextColumn Header="ВОСз" Width="auto" Binding="{Binding Path=VOSzvit}" />
                 <DataGridTextColumn Header="Розряд" Width="auto" Binding="{Binding Path=Category}" />
-                <DataGridTextColumn Header="Рік мед.огляду" Width="auto" Binding="{Binding Path=YearMedical}" />
+                <DataGridCheckBoxColumn Header="Під.приз." Width="auto" Binding="{Binding Path=SubjectToConscription}" />
+                <DataGridTextColumn Header="Мед.огляд" Width="auto" Binding="{Binding Path=YearMedical}" />
                 <DataGridTextColumn Header="Команда" Width="auto" Binding="{Binding Path=TeamNumber}" />
                 <DataGridTextColumn Header="Причина відстрочки" Width="*" Binding="{Binding Path=ReasonForDefer}"/>
             </DataGrid.Columns>
@@ -41,18 +48,18 @@
 
         <StackPanel Grid.Row="2" 
                     Orientation="Horizontal">
-            <Button Content="Add" 
+            <Button Content="Додати" 
                     Style="{StaticResource FooterButton}"
                     Foreground="Green"
                     BorderBrush="Green"
                     Command="{Binding AddSoldier}"/>
-            <Button Content="Ins" 
+            <Button Content="Змінити" 
                     Style="{StaticResource FooterButton}"
                     Foreground="Brown"
                     BorderBrush="Brown"
                     Command="{Binding InsSoldier}"
                     IsEnabled="{Binding IsEnabledButtonSoldier}"/>
-            <Button Content="Del" 
+            <Button Content="Видалити" 
                     Style="{StaticResource FooterButton}"
                     Foreground="Red"
                     BorderBrush="Red"

@@ -8,8 +8,10 @@
         mc:Ignorable="d"
         Title="{Binding NameWindow}" 
         Style="{StaticResource WindowStyle}"
-        Height="450" 
-        Width="800">
+        MinHeight="580"
+        MinWidth="1040"
+        Height="580" 
+        Width="1040">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -40,6 +42,13 @@
                 Grid.Row="1" 
                 Style="{StaticResource BorderRadiusSearch}">
             <control:SoldierEdit Visibility="{Binding IsVisibleEditSoldier}"/>
+        </Border>
+
+        <!-- Dictionary Edit -->
+        <Border Grid.Column="1" 
+                Grid.Row="1" 
+                Style="{StaticResource BorderRadiusSearch}">
+            <control:DictionaryEdit Visibility="{Binding IsVisibleEditDictionary}"/>
         </Border>
     </Grid>
 </Window>
