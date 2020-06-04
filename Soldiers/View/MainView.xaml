@@ -26,29 +26,36 @@
         <Border Grid.Column="0" 
                 Grid.RowSpan="2" 
                 Style="{StaticResource BorderRadiusSearch}"
-                Margin="5,5,0,5">            
-            <control:MenuVertical Width="100"/>
+                Margin="5,5,0,5">
+            <control:MenuVertical Opacity="{Binding IsOpacity}"/>
         </Border>
 
         <!-- Soldier -->
         <Border Grid.Column="1" 
                 Grid.Row="1" 
                 Style="{StaticResource BorderRadiusSearch}">
-            <control:StartDataGrid Visibility="{Binding IsVisibleSoldier}"/>
+            <control:StartDataGrid Visibility="{Binding IsVisibleSoldier}" 
+                                   Opacity="{Binding IsOpacity}"/>
         </Border>
 
         <!-- Soldier Edit -->
         <Border Grid.Column="1" 
                 Grid.Row="1" 
                 Style="{StaticResource BorderRadiusSearch}">
-            <control:SoldierEdit Visibility="{Binding IsVisibleEditSoldier}"/>
+            <control:SoldierEdit Visibility="{Binding IsVisibleEditSoldier}"
+                                 Opacity="{Binding IsOpacity}"/>
         </Border>
 
         <!-- Dictionary Edit -->
         <Border Grid.Column="1" 
                 Grid.Row="1" 
                 Style="{StaticResource BorderRadiusSearch}">
-            <control:DictionaryEdit Visibility="{Binding IsVisibleEditDictionary}"/>
+            <control:DictionaryEdit Visibility="{Binding IsVisibleEditDictionary}"
+                                    Opacity="{Binding IsOpacity}"/>
         </Border>
+
+        <control:ProgressBar Grid.Column="1" 
+                             Grid.Row="1" 
+                             Visibility="{Binding IsVisibleProgressBar}"/>
     </Grid>
 </Window>

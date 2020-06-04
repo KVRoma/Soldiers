@@ -66,6 +66,17 @@
                     BorderBrush="Red"
                     Command="{Binding DelSoldier}"
                     IsEnabled="{Binding IsEnabledButtonSoldier}"/>
+            <Button Content="Друк"
+                    Margin="100,0,0,0"
+                    Style="{StaticResource FooterButton}"
+                    Foreground="Blue"
+                    BorderBrush="Blue"
+                    Command="{Binding PrintReport}"
+                    Visibility="{Binding IsVisibleReportButton}"/>
+            <Label Content="{Binding CountItems}" 
+                   Style="{StaticResource LabelSearch}" 
+                   VerticalAlignment="Center" 
+                   Margin="50,0,0,0"/>
         </StackPanel>
 
     </Grid>

@@ -14,6 +14,7 @@ namespace Soldiers.EF
 
         public DbSet<Soldier> Soldiers { get; set; }
         public DbSet<Dictionary> Dictionaries { get; set; }
+        public DbSet<VOS> VOS { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

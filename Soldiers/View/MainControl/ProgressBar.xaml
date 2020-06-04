@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="Soldiers.View.MainControl.ProgressBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Soldiers.View.MainControl"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <StackPanel Orientation="Vertical" 
+                    VerticalAlignment="Center">
+            <Label Content="Зачекайте хвилинку ..."                                      
+                   Style="{StaticResource LabelProgress}"/>
+            <ProgressBar  Height="5"
+                          Width="500"
+                          IsIndeterminate="True" Foreground="Blue" />
+        </StackPanel>            
+    </Grid>
+</UserControl>

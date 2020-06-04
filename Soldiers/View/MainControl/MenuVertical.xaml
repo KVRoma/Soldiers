@@ -7,9 +7,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="100">
     <StackPanel Orientation="Vertical">
-        <RadioButton Content="Звіт 1"/>
-        <RadioButton Content="Звіт 2"/>
-        <RadioButton Content="Звіт 3"/>
+        <RadioButton Content="Загальний список" IsChecked="{Binding IsCheckedStart}"/>
+        <RadioButton Content="Звіт 2" IsChecked="{Binding IsCheckedReportOne}"/>
+        <RadioButton Content="Звіт 3" IsChecked="{Binding IsCheckedReportTwo}"/>
         <RadioButton Content="Звіт 4"/>
         <RadioButton Content="Звіт 5"/>
 
@@ -17,7 +17,8 @@
                 Margin="5,50,5,5"
                 Style="{StaticResource FooterButton}"
                 Foreground="Blue"
-                BorderBrush="Blue"/>
+                BorderBrush="Blue"
+                Command="{Binding ViewCommand}"/>
        
     </StackPanel>
 </UserControl>

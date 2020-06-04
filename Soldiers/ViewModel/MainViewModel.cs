@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using Soldiers.Commands;
 using System.Windows;
 using Soldiers.Enums;
+using Excel = Microsoft.Office.Interop.Excel;
+using Microsoft.Office.Interop.Excel;
+using System.Threading;
 
 namespace Soldiers.ViewModel
 {
@@ -18,7 +21,8 @@ namespace Soldiers.ViewModel
         public string NameWindow { get; } = "Soldiers - 2020";
         //private readonly SoldierRepository soldierRepo = new SoldierRepository();
         //private readonly DictionaryRepository dictionaryRepo = new DictionaryRepository();
-
+        private int reportNumber;
+        private IEnumerable<VOS> vos;
         private Soldier soldierSelect;
         private IEnumerable<Soldier> soldiers;
         private string profileNameSelect;
@@ -36,6 +40,24 @@ namespace Soldiers.ViewModel
         private Visibility isVisibleEditSoldier;
         private Visibility isVisibleEditDictionary;
         private bool isEnabledButtonSoldier;
+
+        private string countItems;
+        private bool isCheckedStart;
+        private bool isCheckedReportOne;
+        private bool isCheckedReportTwo;
+        private Visibility isVisibleReportButton;
+        private Visibility isVisibleProgressBar;
+        private decimal isOpacity;
+
+        public IEnumerable<VOS> Vos
+        {
+            get { return vos; }
+            set
+            {
+                vos = value;
+                OnPropertyChanged(nameof(Vos));
+            }
+        }
 
         public Soldier SoldierSelect
         {
@@ -208,8 +230,73 @@ namespace Soldiers.ViewModel
                 OnPropertyChanged(nameof(IsEnabledButtonSoldier));
             }
         }
+        public Visibility IsVisibleProgressBar
+        {
+            get { return isVisibleProgressBar; }
+            set
+            {
+                isVisibleProgressBar = value;
+                OnPropertyChanged(nameof(IsVisibleProgressBar));
+            }
+        }
+        public decimal IsOpacity
+        {
+            get { return isOpacity; }
+            set
+            {
+                isOpacity = value;
+                OnPropertyChanged(nameof(IsOpacity));
+            }
+        }
 
-
+        public string CountItems
+        {
+            get { return countItems; }
+            set
+            {
+                countItems = value;
+                OnPropertyChanged(nameof(CountItems));
+            }
+        }
+        public bool IsCheckedStart
+        {
+            get { return isCheckedStart; }
+            set
+            {
+                isCheckedStart = value;
+                OnPropertyChanged(nameof(IsCheckedStart));
+                CountItems = "Натисніть <Перегляд> ...";
+            }
+        }
+        public bool IsCheckedReportOne
+        {
+            get { return isCheckedReportOne; }
+            set
+            {
+                isCheckedReportOne = value;
+                OnPropertyChanged(nameof(IsCheckedReportOne));
+                CountItems = "Натисніть <Перегляд> ...";
+            }
+        }
+        public bool IsCheckedReportTwo
+        {
+            get { return isCheckedReportTwo; }
+            set
+            {
+                isCheckedReportTwo = value;
+                OnPropertyChanged(nameof(IsCheckedReportTwo));
+                CountItems = "Натисніть <Перегляд> ...";
+            }
+        }
+        public Visibility IsVisibleReportButton
+        {
+            get { return isVisibleReportButton; }
+            set
+            {
+                isVisibleReportButton = value;
+                OnPropertyChanged(nameof(IsVisibleReportButton));
+            }
+        }
 
         #endregion
 
@@ -226,6 +313,9 @@ namespace Soldiers.ViewModel
         private Command _insDictionary;
         private Command _delDictionary;
         private Command _exitDictionary;
+
+        private Command _viewCommand;
+        private Command _printReport;
 
         public Command SearchCommand => _searchCommand ?? (_searchCommand = new Command(obj =>
         {
@@ -278,7 +368,7 @@ namespace Soldiers.ViewModel
                 {
                     soldierRepo.Update(SoldierSelect);
                     soldierRepo.Save();
-                    Soldiers = soldierRepo.GetList();                    
+                    Soldiers = soldierRepo.GetList();
                 }
 
             }
@@ -288,7 +378,7 @@ namespace Soldiers.ViewModel
                 {
                     soldierRepo.Create(SoldierSelect);
                     soldierRepo.Save();
-                    Soldiers = soldierRepo.GetList();                    
+                    Soldiers = soldierRepo.GetList();
                 }
 
             }
@@ -358,19 +448,55 @@ namespace Soldiers.ViewModel
             IsVisibleEditSoldier = Visibility.Collapsed;
         }));
 
+        public Command ViewCommand => _viewCommand ?? (_viewCommand = new Command(obj =>
+        {
+            if (IsCheckedStart)
+            {
+                GetSoldiers();
+            }
+            if (IsCheckedReportOne)
+            {
+                GetReportOne();
+            }
+            if (IsCheckedReportTwo)
+            {
+                GetReportTwo();
+            }
 
+        }));
+        public Command PrintReport => _printReport ?? (_printReport = new Command(async obj =>
+        {
+            switch (reportNumber)
+            {
+                case 1:
+                    {
+                        StartProgressBar();
+                        await PrintReportOne("\\Blanks\\ReportOne.xltx");
+                        StopProgressBar();
+                    }
+                    break;
+                case 2:
+                    {
+                    }
+                    break;
+                default:
+                    break;
+
+            }
+
+        }));
+
+        
 
 
         #endregion
 
         public MainViewModel()
         {
+            StopProgressBar();
             Recalculation();
 
-            using (SoldierRepository soldierRepo = new SoldierRepository())
-            {
-                Soldiers = soldierRepo.GetList();
-            }
+            GetSoldiers();
 
             DictionarysComboBox = new List<ComboBoxName>();
             DictionarysComboBox.Add(ComboBoxName.MilitaryRank);
@@ -383,6 +509,30 @@ namespace Soldiers.ViewModel
         }
 
         #region Functions
+        private void StartProgressBar()
+        {
+            IsVisibleProgressBar = Visibility.Visible;
+            IsOpacity = 0.2m;
+        }
+        private void StopProgressBar()
+        {
+            IsVisibleProgressBar = Visibility.Collapsed;
+            IsOpacity = 1m;
+        }
+        /// <summary>
+        /// Повертає загальний список з бази та виділяє перший пункт в меню
+        /// </summary>
+        private void GetSoldiers()
+        {
+            IsCheckedStart = true;
+            IsVisibleReportButton = Visibility.Collapsed;
+            reportNumber = 0;
+            using (SoldierRepository soldierRepo = new SoldierRepository())
+            {
+                Soldiers = soldierRepo.GetList();
+            }
+            CountItems = "Загальна кількість відібраних - " + Soldiers.Count() + " шт.";
+        }
         /// <summary>
         /// Початкові параметри відображення панелей
         /// </summary>
@@ -424,7 +574,7 @@ namespace Soldiers.ViewModel
             }
         }
         /// <summary>
-        /// Завантаження данних з довідника
+        /// Завантаження данних з довідників
         /// </summary>
         private void LoadComboBox()
         {
@@ -440,8 +590,12 @@ namespace Soldiers.ViewModel
                 MilitaryRanks = dic.Where(d => d.GroupeName == Enums.ComboBoxName.MilitaryRank).Select(d => d.ItemName).ToList();
                 TypeAccountings = dic.Where(d => d.GroupeName == Enums.ComboBoxName.TypeAccounting).Select(d => d.ItemName).ToList();
             }
+            using (VOSRepository vosRepo = new VOSRepository())
+            {
+                Vos = vosRepo.GetList();
+            }
 
-            
+
         }
         /// <summary>
         /// Вираховує кількість років з дати народження, якщо менше 45 то категорія № 1, інакше № 2 
@@ -464,11 +618,51 @@ namespace Soldiers.ViewModel
                 foreach (var item in soldier)
                 {
                     item.Category = (GetEndPeriodToBool(item.BirthDate, 45)) ? "2" : "1";
-                    item.SubjectToConscription = !GetEndPeriodToBool(item.BirthDate, 43);                    
+                    item.SubjectToConscription = !GetEndPeriodToBool(item.BirthDate, 43);
                     soldierRepo.Update(item);
                     soldierRepo.Save();
                 }
             }
+        }
+        /// <summary>
+        /// Формує звіт "до 43 років".
+        /// </summary>
+        private void GetReportOne()
+        {
+            IsVisibleReportButton = Visibility.Visible;
+            Soldiers = Soldiers.Where(s => s.TypeAccounting == "Загальний" && s.SubjectToConscription == true);
+            CountItems = "Загальна кількість відібраних - " + Soldiers.Count() + " шт.";
+            reportNumber = 1;
+        }
+        private async Task PrintReportOne(string path)
+        {
+            await Task.Run(() =>
+            {                
+                Excel.Application ExcelApp = new Excel.Application();
+                Excel.Workbook ExcelWorkBook;
+                ExcelWorkBook = ExcelApp.Workbooks.Open(Environment.CurrentDirectory + path);   //Вказуємо шлях до шаблону
+
+                int i = 7;
+                foreach (var item in Vos)
+                {
+                    ExcelApp.Cells[i, 2] = Soldiers.Where(s => s.VOSzvit == item.Name)?.Count();
+                    i++;
+                }                
+                ExcelApp.Cells[1, 18] = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                
+                ExcelApp.Visible = true;           // Робим книгу видимою
+                ExcelApp.UserControl = true;       // Передаємо керування користувачу                
+            });
+        }
+        /// <summary>
+        /// Формує звіт "3.27".
+        /// </summary>
+        private void GetReportTwo()
+        {
+            IsVisibleReportButton = Visibility.Visible;
+            Soldiers = Soldiers.Where(s => s.TypeAccounting == "Загальний" && s.AccountingOther == true);
+            CountItems = "Загальна кількість відібраних - " + Soldiers.Count() + " шт.";
+            reportNumber = 2;
         }
         #endregion
     }
