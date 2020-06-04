@@ -8,9 +8,9 @@
         mc:Ignorable="d"
         Title="{Binding NameWindow}" 
         Style="{StaticResource WindowStyle}"
-        MinHeight="580"
+        MinHeight="620"
         MinWidth="1040"
-        Height="580" 
+        Height="620" 
         Width="1040">
     <Grid>
         <Grid.ColumnDefinitions>

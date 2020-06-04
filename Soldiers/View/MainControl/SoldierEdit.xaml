@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Soldiers.View.MainControl"
              xmlns:UI="clr-namespace:Soldiers.Commands"
              mc:Ignorable="d" 
-             d:DesignHeight="550" d:DesignWidth="800">
+             d:DesignHeight="600" d:DesignWidth="900">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -123,6 +123,7 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <CheckBox Grid.Column="1" Grid.Row="0" 
                           Content="Проходив службу" 
@@ -194,22 +195,27 @@
 
                     <CheckBox Content="Наявність УБД" 
                               IsChecked="{Binding SoldierSelect.UBD}"
-                              UI:FocusAdvancement.AdvancesByEnterKey="True"/>
+                              UI:FocusAdvancement.AdvancesByEnterKey="True"/>                    
                 </StackPanel>
 
-                <Label Grid.Column="0" Grid.Row="12" Content="Рік мед.огляду"/>
+                <Label Grid.Column="0" Grid.Row="12" Content="Назва УБД"/>
                 <TextBox Grid.Column="1" Grid.Row="12" 
-                         Text="{Binding SoldierSelect.YearMedical}"
+                         Text="{Binding SoldierSelect.UBDName}"
                          UI:FocusAdvancement.AdvancesByEnterKey="True"/>
 
-                <Label Grid.Column="0" Grid.Row="13" Content="Вид обліку"/>
-                <ComboBox Grid.Column="1" Grid.Row="13" 
+                <Label Grid.Column="0" Grid.Row="13" Content="Рік мед.огляду"/>
+                <TextBox Grid.Column="1" Grid.Row="13" 
+                         Text="{Binding SoldierSelect.YearMedical}"
+                         UI:FocusAdvancement.AdvancesByEnterKey="True"/>              
+
+                <Label Grid.Column="0" Grid.Row="14" Content="Вид обліку"/>
+                <ComboBox Grid.Column="1" Grid.Row="14" 
                           ItemsSource="{Binding TypeAccountings}" 
                           SelectedItem="{Binding TypeAccountingSelect, Mode=TwoWay}"
                           UI:FocusAdvancement.AdvancesByEnterKey="True"/>
 
                 <StackPanel Grid.Column="1" 
-                            Grid.Row="14" 
+                            Grid.Row="15" 
                             Orientation="Horizontal">
                     <CheckBox Width="150" Content="Загальний"
                               IsChecked="{Binding SoldierSelect.AccountingTotal}"
@@ -220,13 +226,13 @@
                               UI:FocusAdvancement.AdvancesByEnterKey="True"/>
                 </StackPanel>
 
-                <Label Grid.Column="0" Grid.Row="15" Content="Команда №"/>
-                <TextBox Grid.Column="1" Grid.Row="15" 
+                <Label Grid.Column="0" Grid.Row="16" Content="Команда №"/>
+                <TextBox Grid.Column="1" Grid.Row="16" 
                          Text="{Binding SoldierSelect.TeamNumber}"
                          UI:FocusAdvancement.AdvancesByEnterKey="True"/>
 
                 <StackPanel Grid.Column="1" 
-                            Grid.Row="16" 
+                            Grid.Row="17" 
                             Orientation="Horizontal">
                     <CheckBox Width="150" Content="Вільні залишки"
                               IsChecked="{Binding SoldierSelect.AccountingOther}"
@@ -238,16 +244,15 @@
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" 
-                            Grid.Row="17" 
-                            Orientation="Horizontal">                    
-
+                            Grid.Row="18" 
+                            Orientation="Horizontal">
                     <CheckBox Content="Право на відстрочку"
                               IsChecked="{Binding SoldierSelect.RightToDefer}"
                               UI:FocusAdvancement.AdvancesByEnterKey="True"/>
                 </StackPanel>
 
-                <Label Grid.Column="0" Grid.Row="18" Content="Причина відстрочки"/>
-                <TextBox Grid.Column="1" Grid.Row="18" 
+                <Label Grid.Column="0" Grid.Row="19" Content="Причина відстрочки"/>
+                <TextBox Grid.Column="1" Grid.Row="19" 
                          Text="{Binding SoldierSelect.ReasonForDefer}"
                          UI:FocusAdvancement.AdvancesByEnterKey="True"/>
             </Grid>

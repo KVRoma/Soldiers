@@ -33,7 +33,8 @@
             <DataGrid.Columns>                
                 <DataGridTextColumn Header="О/с №" Width="auto" Binding="{Binding Path=AccountNumber}"/>
                 <DataGridTextColumn Header="Звання" Width="auto" Binding="{Binding Path=MilitaryRank}" />
-                <DataGridTextColumn Header="П.І.Б." Width="*" Binding="{Binding Path=FullName}" />
+                <DataGridTextColumn Header="П.І.Б." Width="auto" Binding="{Binding Path=FullName}" />
+                <DataGridTextColumn Header="Адреса реєстрації" Width="*" Binding="{Binding Path=RegistrationAddress}" />
                 <DataGridTextColumn Header="Дата народження" Width="auto" Binding="{Binding Path=BirthDate, StringFormat=\{0:dd.MM.yyyy\}}" />
                 <DataGridTextColumn Header="ВОСн" Width="auto" Binding="{Binding Path=VOSnew}" />
                 <DataGridTextColumn Header="ВОСс" Width="auto" Binding="{Binding Path=VOSold}" />

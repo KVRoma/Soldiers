@@ -22,7 +22,17 @@ namespace Soldiers.EF
         }
         public string Search
         {
-            get { return AccountNumber + " " + MilitaryRank + " " + FullName + " " + VOSnew + " " + VOSold + " " + Category + " " + YearMedical + " " + TeamNumber; }
+            get { return AccountNumber + " " + 
+                         MilitaryRank + " " + 
+                         FullName + " " +
+                         RegistrationAddress + " " +
+                         StudyPlace + " " +
+                         VOSnew + " " + 
+                         VOSold + " " +
+                         VOSzvit + " " +
+                         Category + " " + 
+                         YearMedical + " " + 
+                         TeamNumber; }
         }
         public DateTime? BirthDate { get; set; }
         public string RegistrationAddress { get; set; }
@@ -44,6 +54,7 @@ namespace Soldiers.EF
         public bool OR2 { get; set; }
         public bool ATO { get; set; }
         public bool UBD { get; set; }
+        public string UBDName { get; set; }
         public int YearMedical { get; set; }
         public string TypeAccounting { get; set; }
 
