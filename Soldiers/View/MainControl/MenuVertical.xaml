@@ -5,13 +5,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Soldiers.View.MainControl"
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="100">
+             d:DesignHeight="500" d:DesignWidth="200">
     <StackPanel Orientation="Vertical">
         <RadioButton Content="Загальний список" IsChecked="{Binding IsCheckedStart}"/>
-        <RadioButton Content="Звіт 2" IsChecked="{Binding IsCheckedReportOne}"/>
-        <RadioButton Content="Звіт 3" IsChecked="{Binding IsCheckedReportTwo}"/>
+        <RadioButton Content="Звіт 1 *До 43*" IsChecked="{Binding IsCheckedReportOne}"/>
+        <RadioButton Content="Звіт 2 *3.27*" IsChecked="{Binding IsCheckedReportTwo}"/>
         <RadioButton Content="Звіт 4"/>
         <RadioButton Content="Звіт 5"/>
+
+        <Label Content="Дата формування" 
+               Style="{StaticResource LabelProgress}"/>
+        <DatePicker SelectedDate="{Binding DateReport}" />
 
         <Button Content="Перегляд"
                 Margin="5,50,5,5"

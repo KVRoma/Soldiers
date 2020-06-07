@@ -48,6 +48,7 @@ namespace Soldiers.ViewModel
         private Visibility isVisibleReportButton;
         private Visibility isVisibleProgressBar;
         private decimal isOpacity;
+        private DateTime dateReport;
 
         public IEnumerable<VOS> Vos
         {
@@ -246,6 +247,15 @@ namespace Soldiers.ViewModel
             {
                 isOpacity = value;
                 OnPropertyChanged(nameof(IsOpacity));
+            }
+        }
+        public DateTime DateReport
+        {
+            get { return dateReport; }
+            set
+            {
+                dateReport = value;
+                OnPropertyChanged(nameof(DateReport));
             }
         }
 
@@ -456,11 +466,11 @@ namespace Soldiers.ViewModel
             }
             if (IsCheckedReportOne)
             {
-                GetReportOne();
+                GetReportOne(DateReport);
             }
             if (IsCheckedReportTwo)
             {
-                GetReportTwo();
+                GetReportTwo(DateReport);
             }
 
         }));
@@ -477,6 +487,9 @@ namespace Soldiers.ViewModel
                     break;
                 case 2:
                     {
+                        StartProgressBar();
+                        await PrintReportTwo("\\Blanks\\ReportTwo.xltx");
+                        StopProgressBar();
                     }
                     break;
                 default:
@@ -488,7 +501,6 @@ namespace Soldiers.ViewModel
 
         
 
-
         #endregion
 
         public MainViewModel()
@@ -497,6 +509,8 @@ namespace Soldiers.ViewModel
             Recalculation();
 
             GetSoldiers();
+
+            DateReport = DateTime.Today;
 
             DictionarysComboBox = new List<ComboBoxName>();
             DictionarysComboBox.Add(ComboBoxName.MilitaryRank);
@@ -509,11 +523,17 @@ namespace Soldiers.ViewModel
         }
 
         #region Functions
+        /// <summary>
+        /// Робить видимим ProgressBar
+        /// </summary>
         private void StartProgressBar()
         {
             IsVisibleProgressBar = Visibility.Visible;
             IsOpacity = 0.2m;
         }
+        /// <summary>
+        /// Приховує відображення ProgressBar
+        /// </summary>
         private void StopProgressBar()
         {
             IsVisibleProgressBar = Visibility.Collapsed;
@@ -625,15 +645,21 @@ namespace Soldiers.ViewModel
             }
         }
         /// <summary>
-        /// Формує звіт "до 43 років".
+        /// Формує звіт "до 43 років" станом на "date".
         /// </summary>
-        private void GetReportOne()
+        /// <param name="date"></param>
+        private void GetReportOne(DateTime date)
         {
             IsVisibleReportButton = Visibility.Visible;
-            Soldiers = Soldiers.Where(s => s.TypeAccounting == "Загальний" && s.SubjectToConscription == true);
+            Soldiers = Soldiers.Where(s => s.TypeAccounting == "Загальний" && s.SubjectToConscription == true && s.AcceptedDate <= date);
             CountItems = "Загальна кількість відібраних - " + Soldiers.Count() + " шт.";
             reportNumber = 1;
         }
+        /// <summary>
+        /// Формує звіт з шаблону Excel "до 43 років"
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         private async Task PrintReportOne(string path)
         {
             await Task.Run(() =>
@@ -655,14 +681,43 @@ namespace Soldiers.ViewModel
             });
         }
         /// <summary>
-        /// Формує звіт "3.27".
+        /// Формує звіт "3.27" станом на "date".
         /// </summary>
-        private void GetReportTwo()
+        /// <param name="date"></param>
+        private void GetReportTwo(DateTime date)
         {
             IsVisibleReportButton = Visibility.Visible;
-            Soldiers = Soldiers.Where(s => s.TypeAccounting == "Загальний" && s.AccountingOther == true);
+            Soldiers = Soldiers.Where(s => s.TypeAccounting == "Загальний" && s.AccountingOther == true && s.AcceptedDate <= date);
             CountItems = "Загальна кількість відібраних - " + Soldiers.Count() + " шт.";
             reportNumber = 2;
+        }
+        /// <summary>
+        /// Формує звіт з шаблону Excel "3.27"
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private async Task PrintReportTwo(string path)
+        {
+            await Task.Run(() =>
+            {
+                Excel.Application ExcelApp = new Excel.Application();
+                Excel.Workbook ExcelWorkBook;
+                ExcelWorkBook = ExcelApp.Workbooks.Open(Environment.CurrentDirectory + path);   //Вказуємо шлях до шаблону
+
+                int i = 11;
+                foreach (var item in Vos)
+                {
+                    ExcelApp.Cells[i, 2] = Soldiers.Where(s => s.VOSzvit == item.Name && s.Gender == true && s.Category == "1")?.Count();
+                    ExcelApp.Cells[i, 3] = Soldiers.Where(s => s.VOSzvit == item.Name && s.Gender == true && s.Category == "2")?.Count();
+                    ExcelApp.Cells[i, 5] = Soldiers.Where(s => s.VOSzvit == item.Name && s.Gender == false && s.Category == "1")?.Count();
+                    ExcelApp.Cells[i, 6] = Soldiers.Where(s => s.VOSzvit == item.Name && s.Gender == false && s.Category == "2")?.Count();
+                    i++;
+                }
+                ExcelApp.Cells[1, 18] = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+
+                ExcelApp.Visible = true;           // Робим книгу видимою
+                ExcelApp.UserControl = true;       // Передаємо керування користувачу                
+            });
         }
         #endregion
     }
