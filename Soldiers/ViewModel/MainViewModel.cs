@@ -45,6 +45,8 @@ namespace Soldiers.ViewModel
         private bool isCheckedStart;
         private bool isCheckedReportOne;
         private bool isCheckedReportTwo;
+        private bool isCheckedReportThree;
+        private bool isCheckedReportFour;
         private Visibility isVisibleReportButton;
         private Visibility isVisibleProgressBar;
         private decimal isOpacity;
@@ -298,6 +300,26 @@ namespace Soldiers.ViewModel
                 CountItems = "Натисніть <Перегляд> ...";
             }
         }
+        public bool IsCheckedReportThree
+        {
+            get { return isCheckedReportThree; }
+            set
+            {
+                isCheckedReportThree = value;
+                OnPropertyChanged(nameof(IsCheckedReportThree));
+                CountItems = "Натисніть <Перегляд> ...";
+            }
+        }
+        public bool IsCheckedReportFour
+        {
+            get { return isCheckedReportFour; }
+            set
+            {
+                isCheckedReportFour = value;
+                OnPropertyChanged(nameof(IsCheckedReportFour));
+                CountItems = "Натисніть <Перегляд> ...";
+            }
+        }
         public Visibility IsVisibleReportButton
         {
             get { return isVisibleReportButton; }
@@ -472,6 +494,15 @@ namespace Soldiers.ViewModel
             {
                 GetReportTwo(DateReport);
             }
+            if (IsCheckedReportThree)
+            {
+                GetReportThree();
+            }
+            if (IsCheckedReportFour)
+            {
+                GetReportFour(DateReport);
+            }
+            
 
         }));
         public Command PrintReport => _printReport ?? (_printReport = new Command(async obj =>
@@ -492,6 +523,20 @@ namespace Soldiers.ViewModel
                         StopProgressBar();
                     }
                     break;
+                case 3:
+                    {
+                        StartProgressBar();
+                        await PrintReportThree("\\Blanks\\ReportThree.xltx", DateReport);
+                        StopProgressBar();
+                    }
+                    break;
+                case 4:
+                    {
+                        StartProgressBar();
+
+                        StopProgressBar();
+                    }
+                    break;
                 default:
                     break;
 
@@ -499,8 +544,7 @@ namespace Soldiers.ViewModel
 
         }));
 
-        
-
+       
         #endregion
 
         public MainViewModel()
@@ -639,6 +683,14 @@ namespace Soldiers.ViewModel
                 {
                     item.Category = (GetEndPeriodToBool(item.BirthDate, 45)) ? "2" : "1";
                     item.SubjectToConscription = !GetEndPeriodToBool(item.BirthDate, 43);
+
+                    //DateTime accept = item.AcceptedDate ?? DateTime.MinValue;
+                    //DateTime remove = item.RemoveDate ?? DateTime.MinValue;
+                    //if (accept <= remove)
+                    //{
+                    //    item.AcceptedDate = null;
+                    //}
+
                     soldierRepo.Update(item);
                     soldierRepo.Save();
                 }
@@ -651,12 +703,12 @@ namespace Soldiers.ViewModel
         private void GetReportOne(DateTime date)
         {
             IsVisibleReportButton = Visibility.Visible;
-            Soldiers = Soldiers.Where(s => s.TypeAccounting == "Загальний" && s.SubjectToConscription == true && s.AcceptedDate <= date);
+            Soldiers = Soldiers.Where(s => s.TypeAccounting == "Загальний" && s.SubjectToConscription == true && s.AcceptedDate <= date)?.Where(r => r.RemoveDate > date || r.RemoveDate == null);
             CountItems = "Загальна кількість відібраних - " + Soldiers.Count() + " шт.";
             reportNumber = 1;
         }
         /// <summary>
-        /// Формує звіт з шаблону Excel "до 43 років"
+        /// Друкує звіт з шаблону Excel "до 43 років"
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -687,12 +739,12 @@ namespace Soldiers.ViewModel
         private void GetReportTwo(DateTime date)
         {
             IsVisibleReportButton = Visibility.Visible;
-            Soldiers = Soldiers.Where(s => s.TypeAccounting == "Загальний" && s.AccountingOther == true && s.AcceptedDate <= date);
+            Soldiers = Soldiers.Where(s => s.TypeAccounting == "Загальний" && s.AccountingOther == true && s.AcceptedDate <= date)?.Where(r => r.RemoveDate > date || r.RemoveDate == null);            
             CountItems = "Загальна кількість відібраних - " + Soldiers.Count() + " шт.";
             reportNumber = 2;
         }
         /// <summary>
-        /// Формує звіт з шаблону Excel "3.27"
+        /// Друкує звіт з шаблону Excel "3.27"
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -719,6 +771,147 @@ namespace Soldiers.ViewModel
                 ExcelApp.UserControl = true;       // Передаємо керування користувачу                
             });
         }
+        /// <summary>
+        ///  Формує звіт "3.28" станом на "date".
+        /// </summary>
+        /// <param name="date"></param>
+        private void GetReportThree()
+        {
+            IsVisibleReportButton = Visibility.Visible;
+            CountItems = "Загальна кількість відібраних - " + Soldiers.Count() + " шт.";
+            reportNumber = 3;
+        }
+        /// <summary>
+        /// Друкує звіт "3.28" станом на "date".
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        private async Task PrintReportThree(string path, DateTime date)
+        {
+            await Task.Run(() =>
+            {
+                Excel.Application ExcelApp = new Excel.Application();
+                Excel.Workbook ExcelWorkBook;
+                ExcelWorkBook = ExcelApp.Workbooks.Open(Environment.CurrentDirectory + path);   //Вказуємо шлях до шаблону
+
+                DateTime oldDate = new DateTime(date.Year,1,1);
+                //Було всього на 01.01.хххх
+                ExcelApp.Cells[7, 7] = Soldiers.Where(s=>s.AcceptedDate < oldDate && s.Category == "1")?.Where(r=>r.RemoveDate > oldDate || r.RemoveDate == null).Count();
+                ExcelApp.Cells[8, 7] = Soldiers.Where(s => s.AcceptedDate < oldDate && s.Category == "2")?.Where(r => r.RemoveDate > oldDate || r.RemoveDate == null).Count();
+                // Взято на облік
+                ExcelApp.Cells[10, 7] = Soldiers.Where(s => s.AcceptedDate >= oldDate && s.AcceptedDate <= date && s.Category == "1")?.Count();
+                ExcelApp.Cells[11, 7] = Soldiers.Where(s => s.AcceptedDate >= oldDate && s.AcceptedDate <= date && s.Category == "2")?.Count();
+                // Знято з обліку
+                ExcelApp.Cells[13, 7] = Soldiers.Where(s => s.RemoveDate >= oldDate && s.RemoveDate <= date && s.Category == "1")?.Count();
+                ExcelApp.Cells[14, 7] = Soldiers.Where(s => s.RemoveDate >= oldDate && s.RemoveDate <= date && s.Category == "2")?.Count();
+                // Виключені з обліку
+                //ExcelApp.Cells[16, 7] = "";
+                //ExcelApp.Cells[17, 7] = "";               
+                var totalAccounting = Soldiers.Where(s =>s.AcceptedDate <= date && s.TypeAccounting == "Загальний").Where(r => r.RemoveDate > date || r.RemoveDate == null);
+                var specialAccounting = Soldiers.Where(s => s.AcceptedDate <= date && s.TypeAccounting == "Спеціальний").Where(r => r.RemoveDate > date || r.RemoveDate == null);
+                // Перебуває на "Спеціальному"
+                ExcelApp.Cells[22, 7] = specialAccounting?.Where(s => s.Category == "1")?.Count();
+                ExcelApp.Cells[23, 7] = specialAccounting?.Where(s => s.Category == "2")?.Count();
+                // Призначені до складу команд
+                ExcelApp.Cells[28, 7] = totalAccounting.Where(s => s.AssignedTeam == true && s.Category == "1")?.Count();
+                ExcelApp.Cells[29, 7] = totalAccounting.Where(s => s.AssignedTeam == true && s.Category == "2")?.Count();
+                ExcelApp.Cells[30, 7] = totalAccounting.Where(s => s.AssignedTeam == true && s.OR1 == true)?.Count();
+
+                var test = totalAccounting.Where(s => s.AccountingOther == true)?.Count();
+                var test1 = totalAccounting.Where(s => s.AssignedTeam == false)?.Count();
+                var test2 = totalAccounting.Where(s => s.SubjectToConscription == true)?.Count();
+                Console.Out.WriteLine("Вільні залишки - {0} шт. не призначені - {1} шт. підлягає призову - {2} шт.", test, test1, test2);
+
+                //// Вільні ресурси (підлягають призову)
+                //ExcelApp.Cells[41, 7] = totalAccounting.Where(s => s.AccountingOther == true  && s.Category == "1")?.Count();
+                //ExcelApp.Cells[42, 7] = totalAccounting.Where(s => s.AccountingOther == true  && s.Category == "2")?.Count();
+                
+                // Право на відстрочку
+                int? rightToDefer1 = totalAccounting.Where(s => s.AccountingOther == true && s.RightToDefer == true && s.Category == "1")?.Count();
+                int? rightToDefer2 = totalAccounting.Where(s => s.AccountingOther == true && s.RightToDefer == true && s.Category == "2")?.Count();
+                ExcelApp.Cells[44, 7] = rightToDefer1;
+                ExcelApp.Cells[45, 7] = rightToDefer2;
+                // Жінки
+                int? gender1 = totalAccounting.Where(s => s.AccountingOther == true && s.Gender == false && s.Category == "1")?.Count();
+                int? gender2 = totalAccounting.Where(s => s.AccountingOther == true && s.Gender == false && s.Category == "2")?.Count();
+                ExcelApp.Cells[53, 7] = gender1;
+                ExcelApp.Cells[54, 7] = gender2;
+                // Непридатні
+                int? unsuitable1 = totalAccounting.Where(s => s.AccountingOther == true && s.Unsuitable == true && s.Category == "1")?.Count();
+                int? unsuitable2 = totalAccounting.Where(s => s.AccountingOther == true && s.Unsuitable == true && s.Category == "2")?.Count();
+                ExcelApp.Cells[56, 7] = unsuitable1;
+                ExcelApp.Cells[57, 7] = unsuitable2;
+                // Підлягають призову для звіту 3.28
+                var temp1 = totalAccounting.Where(s => s.AccountingOther == true &&
+                                                        s.RightToDefer == false &&
+                                                        s.Gender == true &&
+                                                        s.Unsuitable == false && 
+                                                        s.Category == "1");
+
+                var temp2 = totalAccounting.Where(s => s.AccountingOther == true &&
+                                                        s.RightToDefer == false &&
+                                                        s.Gender == true &&
+                                                        s.Unsuitable == false &&
+                                                        s.Category == "2");
+
+               
+                // OP-1
+                int? or1 = temp1.Where(s => s.OR1 == true && s.Category == "1")?.Count();
+                int? or2 = temp1.Where(s => s.OR1 == true && s.Category == "2")?.Count();
+                ExcelApp.Cells[62, 7] = or1;
+                ExcelApp.Cells[63, 7] = or2;
+                // Вільні ресурси
+                ExcelApp.Cells[41, 7] = temp1?.Count() - or1;
+                ExcelApp.Cells[42, 7] = temp2?.Count() - or2;
+
+
+                ExcelApp.Cells[1, 18] = oldDate;
+
+                ExcelApp.Visible = true;           // Робим книгу видимою
+                ExcelApp.UserControl = true;       // Передаємо керування користувачу                
+            });
+        }
+        /// <summary>
+        /// Формує звіт "Загальна відомість" станом на "date". 
+        /// </summary>
+        private void GetReportFour(DateTime date)
+        {
+            IsVisibleReportButton = Visibility.Visible;
+            Soldiers = Soldiers.Where(s => s.AcceptedDate <= date)?.Where(r => r.RemoveDate > date || r.RemoveDate == null);
+            CountItems = "Загальна кількість відібраних - " + Soldiers.Count() + " шт.";
+            reportNumber = 3;
+        }
+
+        private async Task PrintReportFour(string path, DateTime date)
+        {
+            await Task.Run(() =>
+            {
+                Excel.Application ExcelApp = new Excel.Application();
+                Excel.Workbook ExcelWorkBook;
+                ExcelWorkBook = ExcelApp.Workbooks.Open(Environment.CurrentDirectory + path);   //Вказуємо шлях до шаблону
+
+                DateTime oldDate = new DateTime(date.Year, 1, 1);
+
+                int i = 10;
+                foreach (var item in Vos)
+                {
+                    ExcelApp.Cells[i, 3] = Soldiers.Where(s => s.VOSzvit == item.Name && s.UBD == true)?.Count(); // наявність УБД
+                    ExcelApp.Cells[i, 4] = Soldiers.Where(s => s.VOSzvit == item.Name && s.UBD == true && s.ATO == true)?.Count(); // наявність УБД та участь в АТО
+                    ExcelApp.Cells[i, 5] = Soldiers.Where(s => s.VOSzvit == item.Name && s.MilitaryService == false)?.Count(); // без досвіду проходження служби
+                    ExcelApp.Cells[i, 6] = Soldiers.Where(s => s.VOSzvit == item.Name && s.AccountingTotal == true)?.Count(); // на загальному обліку
+                    ExcelApp.Cells[i, 7] = Soldiers.Where(s => s.VOSzvit == item.Name && s.AccountingTotal == true && s.Category == "1")?.Count(); // на загальному обліку, 1 розряду
+                    ExcelApp.Cells[i, 8] = Soldiers.Where(s => s.VOSzvit == item.Name && s.AccountingTotal == true && s.Category == "2")?.Count(); // на загальному обліку, 2 розряду
+                    ExcelApp.Cells[i, 9] = Soldiers.Where(s => s.VOSzvit == item.Name && s.AccountingTotal == true && s.Gender == false)?.Count(); // на загальному обліку, жінки
+                    ExcelApp.Cells[i, 4] = Soldiers.Where(s => s.VOSzvit == item.Name && s.AccountingTotal == true && s.Category == "1")?.Count(); // на загальному обліку, 1 розряду
+                    i++;
+                }
+
+                ExcelApp.Visible = true;           // Робим книгу видимою
+                ExcelApp.UserControl = true;       // Передаємо керування користувачу                
+            });
+        }
+
         #endregion
     }
 }
