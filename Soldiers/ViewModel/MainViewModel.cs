@@ -533,7 +533,7 @@ namespace Soldiers.ViewModel
                 case 4:
                     {
                         StartProgressBar();
-
+                        await PrintReportFour("\\Blanks\\ReportFour.xltx", DateReport);
                         StopProgressBar();
                     }
                     break;
@@ -880,9 +880,14 @@ namespace Soldiers.ViewModel
             IsVisibleReportButton = Visibility.Visible;
             Soldiers = Soldiers.Where(s => s.AcceptedDate <= date)?.Where(r => r.RemoveDate > date || r.RemoveDate == null);
             CountItems = "Загальна кількість відібраних - " + Soldiers.Count() + " шт.";
-            reportNumber = 3;
+            reportNumber = 4;
         }
-
+        /// <summary>
+        /// Друкує звіт "Загальна відомість" станом на "date"
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="date"></param>
+        /// <returns></returns>
         private async Task PrintReportFour(string path, DateTime date)
         {
             await Task.Run(() =>
@@ -896,14 +901,25 @@ namespace Soldiers.ViewModel
                 int i = 10;
                 foreach (var item in Vos)
                 {
-                    ExcelApp.Cells[i, 3] = Soldiers.Where(s => s.VOSzvit == item.Name && s.UBD == true)?.Count(); // наявність УБД
-                    ExcelApp.Cells[i, 4] = Soldiers.Where(s => s.VOSzvit == item.Name && s.UBD == true && s.ATO == true)?.Count(); // наявність УБД та участь в АТО
-                    ExcelApp.Cells[i, 5] = Soldiers.Where(s => s.VOSzvit == item.Name && s.MilitaryService == false)?.Count(); // без досвіду проходження служби
-                    ExcelApp.Cells[i, 6] = Soldiers.Where(s => s.VOSzvit == item.Name && s.AccountingTotal == true)?.Count(); // на загальному обліку
-                    ExcelApp.Cells[i, 7] = Soldiers.Where(s => s.VOSzvit == item.Name && s.AccountingTotal == true && s.Category == "1")?.Count(); // на загальному обліку, 1 розряду
-                    ExcelApp.Cells[i, 8] = Soldiers.Where(s => s.VOSzvit == item.Name && s.AccountingTotal == true && s.Category == "2")?.Count(); // на загальному обліку, 2 розряду
-                    ExcelApp.Cells[i, 9] = Soldiers.Where(s => s.VOSzvit == item.Name && s.AccountingTotal == true && s.Gender == false)?.Count(); // на загальному обліку, жінки
-                    ExcelApp.Cells[i, 4] = Soldiers.Where(s => s.VOSzvit == item.Name && s.AccountingTotal == true && s.Category == "1")?.Count(); // на загальному обліку, 1 розряду
+                    var temp = Soldiers.Where(s => s.VOSzvit == item.Name); // відбираємо по ВОС
+                    ExcelApp.Cells[i, 3] = temp.Where(s => s.UBD == true)?.Count(); // наявність УБД
+                    ExcelApp.Cells[i, 4] = temp.Where(s => s.UBD == true && s.ATO == true)?.Count(); // наявність УБД та участь в АТО
+                    ExcelApp.Cells[i, 5] = temp.Where(s => s.MilitaryService == false)?.Count(); // без досвіду проходження служби
+                    ExcelApp.Cells[i, 6] = temp.Where(s => s.AccountingTotal == true)?.Count(); // на загальному обліку
+                    ExcelApp.Cells[i, 7] = temp.Where(s => s.AccountingTotal == true && s.Category == "1")?.Count(); // на загальному обліку, 1 розряду
+                    ExcelApp.Cells[i, 8] = temp.Where(s => s.AccountingTotal == true && s.Category == "2")?.Count(); // на загальному обліку, 2 розряду
+                    ExcelApp.Cells[i, 9] = temp.Where(s => s.AccountingTotal == true && s.Gender == false)?.Count(); // на загальному обліку, жінки
+                    ExcelApp.Cells[i, 10] = temp.Where(s => s.AccountingTotal == false)?.Count(); // на спеціальному обліку
+                    ExcelApp.Cells[i, 11] = temp.Where(s => s.AccountingTotal == false && s.Gender == false)?.Count(); // на спеціальному обліку, жінки
+                    ExcelApp.Cells[i, 12] = temp.Where(s => s.AssignedTeam == true)?.Count(); // призначені
+                    ExcelApp.Cells[i, 17] = temp.Where(s => s.AssignedTeam == true && s.Gender == false)?.Count(); // призначені, жінки
+                    ExcelApp.Cells[i, 18] = temp.Where(s => s.OR1 == true)?.Count(); // призначені в ОР1
+                    ExcelApp.Cells[i, 19] = temp.Where(s => s.AccountingOther == true)?.Count(); // Вільні залишки
+                    ExcelApp.Cells[i, 20] = temp.Where(s => s.AccountingOther == true && s.Category == "1")?.Count(); // Вільні залишки, 1 розряду
+                    ExcelApp.Cells[i, 21] = temp.Where(s => s.AccountingOther == true && s.Category == "2")?.Count(); // Вільні залишки, 2 розряду
+                    ExcelApp.Cells[i, 22] = temp.Where(s => s.AccountingOther == true && s.MilitaryService == false)?.Count(); // Вільні залишки, без досвіду служби
+                    ExcelApp.Cells[i, 23] = temp.Where(s => s.AccountingOther == true && s.Gender == false)?.Count(); // Вільні залишки, жінки
+                    ExcelApp.Cells[i, 24] = temp.Where(s => s.AccountingOther == true && s.SubjectToConscription == true)?.Count(); // Вільні залишки, підлягають призову
                     i++;
                 }
 

@@ -11,7 +11,7 @@
         <RadioButton Content="Звіт 1 *До 43*" IsChecked="{Binding IsCheckedReportOne}"/>
         <RadioButton Content="Звіт 2 *3.27*" IsChecked="{Binding IsCheckedReportTwo}"/>
         <RadioButton Content="Звіт 3 *3.28*" IsChecked="{Binding IsCheckedReportThree}"/>
-        <RadioButton Content="Звіт 4 *Відомість*"/>
+        <RadioButton Content="Звіт 4 *Відомість*" IsChecked="{Binding IsCheckedReportFour}"/>
 
         <Label Content="Дата формування" 
                Style="{StaticResource LabelProgress}"/>

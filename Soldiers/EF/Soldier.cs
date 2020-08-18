@@ -27,6 +27,7 @@ namespace Soldiers.EF
                          FullName + " " +
                          RegistrationAddress + " " +
                          StudyPlace + " " +
+                         WorkPlace + " " +
                          VOSnew + " " + 
                          VOSold + " " +
                          VOSzvit + " " +
