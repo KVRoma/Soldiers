@@ -5,13 +5,28 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Soldiers.View.MainControl"
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="200">
+             d:DesignHeight="600" d:DesignWidth="200">
     <StackPanel Orientation="Vertical">
         <RadioButton Content="Загальний список" IsChecked="{Binding IsCheckedStart}"/>
+        <Label Content="Звіти" 
+               Style="{StaticResource LabelProgress}"/>
         <RadioButton Content="Звіт 1 *До 43*" IsChecked="{Binding IsCheckedReportOne}"/>
         <RadioButton Content="Звіт 2 *3.27*" IsChecked="{Binding IsCheckedReportTwo}"/>
         <RadioButton Content="Звіт 3 *3.28*" IsChecked="{Binding IsCheckedReportThree}"/>
         <RadioButton Content="Звіт 4 *Відомість*" IsChecked="{Binding IsCheckedReportFour}"/>
+        <Label Content="Фільтри" 
+               Style="{StaticResource LabelProgress}"/>
+        <RadioButton Content="*УБД*" IsChecked="{Binding IsFilterUBD}"/>
+        <RadioButton Content="*ОР-1*" IsChecked="{Binding IsFilterOR1}"/>
+        <RadioButton Content="*ОР-2*" IsChecked="{Binding IsFilterOR2}"/>
+        <RadioButton Content="*Призначені*" IsChecked="{Binding IsFilterAssignedTeam}"/>
+        <RadioButton Content="*Спеціальний*" IsChecked="{Binding IsFilterTypeAccounting}"/>
+        <RadioButton Content="*Зняті з обліку*" IsChecked="{Binding IsFilterRemoveDate}"/>
+        <RadioButton Content="*Взяті на облік*" IsChecked="{Binding IsFilterAcceptedDate}"/>
+        <RadioButton Content="*Вільні залишки*" IsChecked="{Binding IsFilterAccountingOther}"/>
+        <RadioButton Content="*Непридатні*" IsChecked="{Binding IsFilterUnsuitable}"/>
+        <RadioButton Content="*Відстрочка*" IsChecked="{Binding IsFilterRightToDefer}"/>
+        <RadioButton Content="*Жінки*" IsChecked="{Binding IsFilterGender}"/>
 
         <Label Content="Дата формування" 
                Style="{StaticResource LabelProgress}"/>

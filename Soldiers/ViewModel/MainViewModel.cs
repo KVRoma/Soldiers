@@ -47,6 +47,20 @@ namespace Soldiers.ViewModel
         private bool isCheckedReportTwo;
         private bool isCheckedReportThree;
         private bool isCheckedReportFour;
+
+        private bool isFilterUBD;
+        private bool isFilterOR1;
+        private bool isFilterOR2;
+        private bool isFilterAssignedTeam;
+        private bool isFilterTypeAccounting;
+        private bool isFilterRemoveDate;
+        private bool isFilterAcceptedDate;
+        private bool isFilterAccountingOther;
+        private bool isFilterUnsuitable;
+        private bool isFilterRightToDefer;
+        private bool isFilterGender;
+        
+
         private Visibility isVisibleReportButton;
         private Visibility isVisibleProgressBar;
         private decimal isOpacity;
@@ -320,6 +334,107 @@ namespace Soldiers.ViewModel
                 CountItems = "Натисніть <Перегляд> ...";
             }
         }
+
+        public bool IsFilterUBD
+        {
+            get { return isFilterUBD; }
+            set
+            {
+                isFilterUBD = value;
+                OnPropertyChanged(nameof(IsFilterUBD));
+            }
+        }
+        public bool IsFilterOR1
+        {
+            get { return isFilterOR1; }
+            set
+            {
+                isFilterOR1 = value;
+                OnPropertyChanged(nameof(IsFilterOR1));
+            }
+        }
+        public bool IsFilterOR2
+        {
+            get { return isFilterOR2; }
+            set
+            {
+                isFilterOR2 = value;
+                OnPropertyChanged(nameof(IsFilterOR2));
+            }
+        }
+        public bool IsFilterAssignedTeam 
+        { 
+            get { return isFilterAssignedTeam; } 
+            set 
+            { 
+                isFilterAssignedTeam = value;
+                OnPropertyChanged(nameof(IsFilterAssignedTeam));
+            } 
+        }
+        public bool IsFilterTypeAccounting
+        {
+            get { return isFilterTypeAccounting; }
+            set
+            {
+                isFilterTypeAccounting = value;
+                OnPropertyChanged(nameof(IsFilterTypeAccounting));
+            }
+        }
+        public bool IsFilterRemoveDate 
+        { 
+            get { return isFilterRemoveDate; } 
+            set 
+            {
+                isFilterRemoveDate = value;
+                OnPropertyChanged(nameof(IsFilterRemoveDate));
+            } 
+        }
+        public bool IsFilterAcceptedDate
+        {
+            get { return isFilterAcceptedDate; }
+            set
+            {
+                isFilterAcceptedDate = value;
+                OnPropertyChanged(nameof(IsFilterAcceptedDate));
+            }
+        }
+        public bool IsFilterAccountingOther
+        {
+            get { return isFilterAccountingOther; }
+            set
+            {
+                isFilterAccountingOther = value;
+                OnPropertyChanged(nameof(IsFilterAccountingOther));
+            }
+        }
+        public bool IsFilterUnsuitable
+        {
+            get { return isFilterUnsuitable; }
+            set
+            {
+                isFilterUnsuitable = value;
+                OnPropertyChanged(nameof(IsFilterUnsuitable));
+            }
+        }
+        public bool IsFilterRightToDefer
+        {
+            get { return isFilterRightToDefer; }
+            set
+            {
+                isFilterRightToDefer = value;
+                OnPropertyChanged(nameof(IsFilterRightToDefer));
+            }
+        }
+        public bool IsFilterGender
+        {
+            get { return isFilterGender; }
+            set
+            {
+                isFilterGender = value;
+                OnPropertyChanged(nameof(IsFilterGender));
+            }
+        }
+
         public Visibility IsVisibleReportButton
         {
             get { return isVisibleReportButton; }
@@ -358,13 +473,12 @@ namespace Soldiers.ViewModel
                 {
                     Soldiers = soldierRepo.GetList();
                 }
+                IsCheckedStart = true;
+                ViewCommand.Execute("");
             }
             else
-            {
-                using (SoldierRepository soldierRepo = new SoldierRepository())
-                {
-                    Soldiers = soldierRepo.GetList().Where(n => n.Search.ToUpper().Contains(search.ToUpper()));
-                }
+            {                
+                Soldiers = Soldiers.Where(n => n.Search.ToUpper().Contains(search.ToUpper()));                
             }
         }));
         public Command AddSoldier => _addSoldier ?? (_addSoldier = new Command(obj =>
@@ -391,8 +505,13 @@ namespace Soldiers.ViewModel
             SoldierSelect.MilitaryRank = MilitaryRankSelect;
             SoldierSelect.TypeAccounting = TypeAccountingSelect;
             SoldierSelect.Category = (GetEndPeriodToBool(SoldierSelect.BirthDate, 45)) ? "2" : "1";
-            SoldierSelect.SubjectToConscription = !GetEndPeriodToBool(SoldierSelect.BirthDate, 43);
+            SoldierSelect.SubjectToConscription = SoldierSelect.MilitaryService ? false : true;         //спочатку перевіряєм чи служив
+            if (GetEndPeriodToBool(SoldierSelect.BirthDate, 43))                                        // потім дивимось чи ще проходить по віку
+            {
+                SoldierSelect.SubjectToConscription = false;
+            }            
             SoldierSelect.Color = (SoldierSelect.RemoveDate == null || SoldierSelect.RemoveDate == DateTime.MinValue) ? "Black" : "Silver";
+            
 
             if (SoldierSelect.Id > 0)
             {
@@ -503,6 +622,51 @@ namespace Soldiers.ViewModel
                 GetReportFour(DateReport);
             }
             
+            if (IsFilterUBD)
+            {
+                GetUBD(DateReport);
+            }
+            if (IsFilterOR1)
+            {
+                GetOR1(DateReport);
+            }
+            if (IsFilterOR2)
+            {
+                GetOR2(DateReport);
+            }
+            if (IsFilterAssignedTeam)
+            {
+                GetAssignedTeam(DateReport);
+            }
+            if (IsFilterTypeAccounting)
+            {
+                GetTypeAccounting(DateReport);
+            }
+            if (IsFilterRemoveDate)
+            {
+                GetRemoveDate(DateReport);
+            }
+            if (IsFilterAcceptedDate)
+            {
+                GetAcceptedDate(DateReport);
+            }
+            if (IsFilterAccountingOther)
+            {
+                GetAccountingOther(DateReport);
+            }
+            if (IsFilterUnsuitable)
+            {
+                GetUnsuitable(DateReport);
+            }
+            if (IsFilterRightToDefer)
+            {
+                GetRightToDefer(DateReport);
+            }
+            if (IsFilterGender)
+            {
+                GetGender(DateReport);
+            }
+
 
         }));
         public Command PrintReport => _printReport ?? (_printReport = new Command(async obj =>
@@ -543,8 +707,7 @@ namespace Soldiers.ViewModel
             }
 
         }));
-
-       
+        
         #endregion
 
         public MainViewModel()
@@ -662,7 +825,7 @@ namespace Soldiers.ViewModel
 
         }
         /// <summary>
-        /// Вираховує кількість років з дати народження, якщо менше 45 то категорія № 1, інакше № 2 
+        /// Вираховує кількість років з дати народження, якщо (рік народження + count) менше або дорівнює сьогодняшній даті то true, інакше false 
         /// </summary>
         /// <param name="startDate"></param>
         /// <returns></returns>
@@ -672,7 +835,7 @@ namespace Soldiers.ViewModel
             return (endDate <= DateTime.Today);
         }
         /// <summary>
-        /// Перераховує кількість років від народження і до сьогодні, та змінює категорію
+        /// Перераховує кількість років від народження і до сьогодні, та змінює категорію (якщо 45 і більше то "2", менше 45 то "1") + змінює "Підлягає призову" по віку (43)
         /// </summary>
         private void Recalculation()
         {
@@ -682,14 +845,10 @@ namespace Soldiers.ViewModel
                 foreach (var item in soldier)
                 {
                     item.Category = (GetEndPeriodToBool(item.BirthDate, 45)) ? "2" : "1";
-                    item.SubjectToConscription = !GetEndPeriodToBool(item.BirthDate, 43);
-
-                    //DateTime accept = item.AcceptedDate ?? DateTime.MinValue;
-                    //DateTime remove = item.RemoveDate ?? DateTime.MinValue;
-                    //if (accept <= remove)
-                    //{
-                    //    item.AcceptedDate = null;
-                    //}
+                    if (GetEndPeriodToBool(item.BirthDate, 43))
+                    {
+                        item.SubjectToConscription = false;
+                    }                                       
 
                     soldierRepo.Update(item);
                     soldierRepo.Save();
@@ -739,7 +898,10 @@ namespace Soldiers.ViewModel
         private void GetReportTwo(DateTime date)
         {
             IsVisibleReportButton = Visibility.Visible;
-            Soldiers = Soldiers.Where(s => s.TypeAccounting == "Загальний" && s.AccountingOther == true && s.AcceptedDate <= date)?.Where(r => r.RemoveDate > date || r.RemoveDate == null);            
+            Soldiers = Soldiers.Where(s => s.TypeAccounting == "Загальний" && 
+                                           s.AccountingOther == true && 
+                                           s.AcceptedDate <= date)?
+                                .Where(r => r.RemoveDate > date || r.RemoveDate == null);            
             CountItems = "Загальна кількість відібраних - " + Soldiers.Count() + " шт.";
             reportNumber = 2;
         }
@@ -818,10 +980,10 @@ namespace Soldiers.ViewModel
                 ExcelApp.Cells[29, 7] = totalAccounting.Where(s => s.AssignedTeam == true && s.Category == "2")?.Count();
                 ExcelApp.Cells[30, 7] = totalAccounting.Where(s => s.AssignedTeam == true && s.OR1 == true)?.Count();
 
-                var test = totalAccounting.Where(s => s.AccountingOther == true)?.Count();
-                var test1 = totalAccounting.Where(s => s.AssignedTeam == false)?.Count();
-                var test2 = totalAccounting.Where(s => s.SubjectToConscription == true)?.Count();
-                Console.Out.WriteLine("Вільні залишки - {0} шт. не призначені - {1} шт. підлягає призову - {2} шт.", test, test1, test2);
+                //var test = totalAccounting.Where(s => s.AccountingOther == true)?.Count();
+                //var test1 = totalAccounting.Where(s => s.AssignedTeam == false)?.Count();
+                //var test2 = totalAccounting.Where(s => s.SubjectToConscription == true)?.Count();
+                //Console.Out.WriteLine("Вільні залишки - {0} шт. не призначені - {1} шт. підлягає призову - {2} шт.", test, test1, test2);
 
                 //// Вільні ресурси (підлягають призову)
                 //ExcelApp.Cells[41, 7] = totalAccounting.Where(s => s.AccountingOther == true  && s.Category == "1")?.Count();
@@ -857,8 +1019,8 @@ namespace Soldiers.ViewModel
 
                
                 // OP-1
-                int? or1 = temp1.Where(s => s.OR1 == true && s.Category == "1")?.Count();
-                int? or2 = temp1.Where(s => s.OR1 == true && s.Category == "2")?.Count();
+                int? or1 = temp1.Where(s => s.OR1 == true )?.Count();
+                int? or2 = temp2.Where(s => s.OR1 == true )?.Count();
                 ExcelApp.Cells[62, 7] = or1;
                 ExcelApp.Cells[63, 7] = or2;
                 // Вільні ресурси
@@ -926,6 +1088,127 @@ namespace Soldiers.ViewModel
                 ExcelApp.Visible = true;           // Робим книгу видимою
                 ExcelApp.UserControl = true;       // Передаємо керування користувачу                
             });
+        }
+        /// <summary>
+        /// УБД на дату
+        /// </summary>
+        /// <param name="date"></param>
+        private void GetUBD(DateTime date)
+        {
+            IsVisibleReportButton = Visibility.Collapsed;
+            Soldiers = Soldiers.Where(s => s.UBD == true && s.AcceptedDate <= date)?.Where(r => r.RemoveDate > date || r.RemoveDate == null);
+            CountItems = "Загальна кількість відібраних (УБД) - " + Soldiers.Count() + " шт."; 
+            reportNumber = 5;
+        }
+        /// <summary>
+        /// ОР1 на дату
+        /// </summary>
+        /// <param name="date"></param>
+        private void GetOR1(DateTime date)
+        {
+            IsVisibleReportButton = Visibility.Collapsed;
+            Soldiers = Soldiers.Where(s => s.OR1 == true && s.AcceptedDate <= date)?.Where(r => r.RemoveDate > date || r.RemoveDate == null);
+            CountItems = "Загальна кількість відібраних (ОР1) - " + Soldiers.Count() + " шт.";
+            reportNumber = 6;
+        }
+        /// <summary>
+        /// ОР2 на дату
+        /// </summary>
+        /// <param name="date"></param>
+        private void GetOR2(DateTime date)
+        {
+            IsVisibleReportButton = Visibility.Collapsed;
+            Soldiers = Soldiers.Where(s => s.OR2 == true && s.AcceptedDate <= date)?.Where(r => r.RemoveDate > date || r.RemoveDate == null);
+            CountItems = "Загальна кількість відібраних (ОР2) - " + Soldiers.Count() + " шт.";
+            reportNumber = 7;
+        }
+        /// <summary>
+        /// Призначені на дату
+        /// </summary>
+        /// <param name="date"></param>
+        private void GetAssignedTeam(DateTime date)
+        {
+            IsVisibleReportButton = Visibility.Collapsed;
+            Soldiers = Soldiers.Where(s => s.AssignedTeam == true && s.AcceptedDate <= date)?.Where(r => r.RemoveDate > date || r.RemoveDate == null);
+            CountItems = "Загальна кількість відібраних (Призначені) - " + Soldiers.Count() + " шт.";
+            reportNumber = 8;
+        }
+        /// <summary>
+        /// Спеціальний на дату
+        /// </summary>
+        /// <param name="date"></param>
+        private void GetTypeAccounting(DateTime date)  // Спеціальний
+        {
+            IsVisibleReportButton = Visibility.Collapsed;
+            Soldiers = Soldiers.Where(s => s.TypeAccounting == "Спеціальний" && s.AcceptedDate <= date)?.Where(r => r.RemoveDate > date || r.RemoveDate == null);
+            CountItems = "Загальна кількість відібраних (Спеціальний) - " + Soldiers.Count() + " шт.";
+            reportNumber = 9;
+        }
+        /// <summary>
+        /// Зняті з обліку на дату
+        /// </summary>
+        /// <param name="date"></param>
+        private void GetRemoveDate(DateTime date)
+        {
+            IsVisibleReportButton = Visibility.Collapsed;
+            Soldiers = Soldiers.Where(s => s.RemoveDate != null)?.Where(s => s.RemoveDate < date);
+            CountItems = "Загальна кількість відібраних (Зняті з обліку) - " + Soldiers.Count() + " шт.";
+            reportNumber = 10;
+        }
+        /// <summary>
+        /// Взяті на облік на дату
+        /// </summary>
+        /// <param name="date"></param>      
+        private void GetAcceptedDate(DateTime date)
+        {
+            IsVisibleReportButton = Visibility.Collapsed;
+            Soldiers = Soldiers.Where(s => s.AcceptedDate <= date)?.Where(r => r.RemoveDate > date || r.RemoveDate == null);
+            CountItems = "Загальна кількість відібраних (Взяті на облік) - " + Soldiers.Count() + " шт.";
+            reportNumber = 11;
+        }
+        /// <summary>
+        /// Вільні залишки на дату
+        /// </summary>
+        /// <param name="date"></param>
+        private void GetAccountingOther(DateTime date)
+        {
+            IsVisibleReportButton = Visibility.Collapsed;
+            Soldiers = Soldiers.Where(s => s.AccountingOther == true && s.AcceptedDate <= date)?.Where(r => r.RemoveDate > date || r.RemoveDate == null);
+            CountItems = "Загальна кількість відібраних (Вільні залишки) - " + Soldiers.Count() + " шт.";
+            reportNumber = 12;
+        }
+        /// <summary>
+        /// Непридатні на дату
+        /// </summary>
+        /// <param name="date"></param>
+        private void GetUnsuitable(DateTime date)
+        {
+            IsVisibleReportButton = Visibility.Collapsed;
+            Soldiers = Soldiers.Where(s => s.Unsuitable == true && s.AcceptedDate <= date)?.Where(r => r.RemoveDate > date || r.RemoveDate == null);
+            CountItems = "Загальна кількість відібраних (Непридатні) - " + Soldiers.Count() + " шт.";
+            reportNumber = 13;
+        }
+        /// <summary>
+        /// Право на відстрочку на дату
+        /// </summary>
+        /// <param name="date"></param>
+        private void GetRightToDefer(DateTime date)
+        {
+            IsVisibleReportButton = Visibility.Collapsed;
+            Soldiers = Soldiers.Where(s => s.RightToDefer == true && s.AcceptedDate <= date)?.Where(r => r.RemoveDate > date || r.RemoveDate == null);
+            CountItems = "Загальна кількість відібраних (Прово на відстрочку) - " + Soldiers.Count() + " шт.";
+            reportNumber = 14;
+        }
+        /// <summary>
+        /// Жінки на дату
+        /// </summary>
+        /// <param name="date"></param>
+        private void GetGender(DateTime date)
+        {
+            IsVisibleReportButton = Visibility.Collapsed;
+            Soldiers = Soldiers.Where(s => s.Gender == false && s.AcceptedDate <= date)?.Where(r => r.RemoveDate > date || r.RemoveDate == null);
+            CountItems = "Загальна кількість відібраних (Жінки) - " + Soldiers.Count() + " шт.";
+            reportNumber = 15;
         }
 
         #endregion
